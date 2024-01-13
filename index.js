@@ -9,3 +9,11 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the employee_management database.`)
 );
+
+db.connect((err) => {
+    if(err) {
+        console.error('Error connecting to the database: ', err.message);
+        return;
+    }
+    console.log('Connected to the employee_management database.')
+})
