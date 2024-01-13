@@ -1,4 +1,6 @@
 const mysql = require('mysql2');
+// require inquirer
+
 
 const db = mysql.createConnection(
     {
@@ -17,3 +19,34 @@ db.connect((err) => {
     }
     console.log('Connected to the employee_management database.')
 })
+
+// add in mainMenu() function to display initial menu and user choices
+    // presented with the following options: 
+    // view all departments, view all roles, view all employees
+    // add a department, add a role, add an employee
+    // update an employee role
+    // mainMenu() will have calls to viewDepartments(), addDepartments(), etc as needed
+
+// add in viewEmployee() function
+    // table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+
+// add in addEmployee() function
+    // prompt to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
+
+// add in updateEmployeeRole() function
+    // prompt to select an employee to update and their new role and this information is updated in the database
+
+// add in viewDepartment() function
+    // table showing department names and department ids
+
+// add in addDepartment() function
+    // prompt to enter the name of the department and that department is added to the database
+
+// add in viewRoles() function
+    // table showing job title, role id, the department that role belongs to, and the salary for that role
+
+// add in addRoles() function
+    // prompt to enter the name, salary, and department for the role and that role is added to the database
+
+// add in initial call to start application
+// add in .on('exit') for db at the end
