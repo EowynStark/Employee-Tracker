@@ -54,6 +54,17 @@ function viewEmployee() {
 
 // add in updateEmployeeRole() function
     // prompt to select an employee to update and their new role and this information is updated in the database
+function updateEmployeeRole() {
+    // fetch existing employees and roles
+    const employeesQuery = `SELECT id, CONCAT (first_name, ' ', last_name) AS employee_name FROM employees`;
+    const rolesQuery = `SELECT id, title FROM roles`;
+    db.query(employeesQuery, (employeeErr, employees) => {
+
+    })
+    db.query(rolesQuery, (roleErr, roles) => {
+        
+    })
+}
 
 // view all departments
     // table showing department names and department ids
