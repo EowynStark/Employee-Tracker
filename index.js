@@ -28,7 +28,7 @@ db.connect((err) => {
     // update an employee role
     // mainMenu() will have calls to viewDepartments(), addDepartments(), etc as needed
 
-// add in viewEmployee() function
+// view all employees
     // table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 function viewEmployee() {
     const query = `SELECT
@@ -55,7 +55,7 @@ function viewEmployee() {
 // add in updateEmployeeRole() function
     // prompt to select an employee to update and their new role and this information is updated in the database
 
-// add in viewDepartment() function
+// view all departments
     // table showing department names and department ids
 function viewDepartment() {
     db.query(`SELECT * FROM departments`, (err, results) => {
@@ -67,7 +67,7 @@ function viewDepartment() {
 // add in addDepartment() function
     // prompt to enter the name of the department and that department is added to the database
 
-// add in viewRoles() function
+// view all roles
     // table showing job title, role id, the department that role belongs to, and the salary for that role
 function viewRoles() {
     db.query(`SELECT * FROM roles`, (err, results) => {
@@ -75,8 +75,8 @@ function viewRoles() {
         console.table(results);
     });
 }
-// add in addRoles() function
-    // prompt to enter the name, salary, and department for the role and that role is added to the database
+// add in new roles
+    // prompts to enter the name, salary, and department for the role and that role is added to the database
 function addRoles() {
     // fetch existing departments, create variable departmentChoices, .push departmentChoices
     const existingDepartmentsQuery = `SELECT id, name FROM departments`;
@@ -87,6 +87,7 @@ function addRoles() {
             value: department.id,
         }));
         departmentChoices.push({ name: 'Add New Department', value: 'new'});
+        // prompt to add role, includes department role that can be added to
         inquirer.prompt([
         {
             type: 'input',
@@ -131,6 +132,18 @@ function addRoles() {
         });
     });
 }
-// add insertRole() function
+// helper function for addRoles()
+function insertRole(title, salary, departmentId) {
+    const roleQuery = `INSERT INTO roles SET ?`;
+    const roleData = {
+        title,
+        salary,
+        department_id: departmentId,
+    };
+    db.query(roleQuery, roleData, (roleErr, roleResult) => {
+        if (roleErr) throw roleErr;
+        console.log('Role added successfully.');
+    });
+}
 // add in initial call to start application
 // add in .on('exit') for db at the end
