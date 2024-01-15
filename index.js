@@ -69,7 +69,12 @@ function viewDepartment() {
 
 // add in viewRoles() function
     // table showing job title, role id, the department that role belongs to, and the salary for that role
-
+function viewRoles() {
+    db.query(`SELECT * FROM roles`, (err, results) => {
+        if(err) throw err;
+        console.table(results);
+    });
+}
 // add in addRoles() function
     // prompt to enter the name, salary, and department for the role and that role is added to the database
 
