@@ -179,9 +179,17 @@ function updateEmployeeRole() {
     const employeesQuery = `SELECT id, CONCAT (first_name, ' ', last_name) AS employee_name FROM employees`;
     const rolesQuery = `SELECT id, title FROM roles`;
     db.query(employeesQuery, (employeeErr, employees) => {
-        if (employeeErr) throw employeeErr;
+        if (employeeErr) {
+            console.error('Error with employee query: ', employeeErr);
+            mainMenu();
+            return;
+        };
         db.query(rolesQuery, (roleErr, roles) => {
-            if (roleErr) throw roleErr;
+            if (roleErr) {
+                console.error('Error with role query: ', roleErr);
+                mainMenu();
+                return;
+            };
             const employeeChoices = employees.map(employee => ({
                 name: employee.employee_name,
                 value: employee.id,
@@ -207,7 +215,11 @@ function updateEmployeeRole() {
         .then((answers) => {
             const updateQuery = `UPDATE employees SET role_id = ? WHERE id = ?`;
             db.query(updateQuery, [answers.newRoleId, answers.employeeId], (updateErr, updateResult) => {
-                if (updateErr) throw updateErr;
+                if (updateErr) {
+                    console.error('Error updating employee: ', updateErr);
+                    mainMenu();
+                    return;
+                };
                 console.log('Employee role updated successfully.');
                 mainMenu();
                  });
@@ -220,7 +232,11 @@ function updateEmployeeRole() {
     // table showing department names and department ids
 function viewDepartment() {
     db.query(`SELECT * FROM departments`, (err, results) => {
-        if (err) throw err;
+        if (err) {
+            console.error('Error viewing departments: ', err);
+            mainMenu();
+            return;
+        };
         console.table(results);
         mainMenu();
     });
@@ -239,7 +255,11 @@ function addDepartments() {
     .then((answers) => {
         const departmentQuery = `INSERT INTO departments (name) VALUES (?)`;
         db.query(departmentQuery, [answers.departmentName], (deptErr, deptResult) => {
-            if (deptErr) throw deptErr;
+            if (deptErr) {
+                console.error('Error with department query: ', deptErr);
+                mainMenu();
+                return;
+            };
             console.log('Department added successfully.');
             mainMenu();
         });
@@ -250,7 +270,11 @@ function addDepartments() {
     // table showing job title, role id, the department that role belongs to, and the salary for that role
 function viewRoles() {
     db.query(`SELECT * FROM roles`, (err, results) => {
-        if(err) throw err;
+        if(err) {
+            console.error('Error viewing all roles: ', err);
+            mainMenu();
+            return;
+        };
         console.table(results);
         mainMenu();
     });
@@ -261,7 +285,11 @@ function addRoles() {
     // fetch existing departments, create variable departmentChoices, .push departmentChoices
     const existingDepartmentsQuery = `SELECT id, name FROM departments`;
     db.query(existingDepartmentsQuery, (err, existingDepartmentsQuery) => {
-        if (err) throw err;
+        if (err) {
+            console.error('Error with department query: ', err);
+            mainMenu();
+            return;
+        };
         const departmentChoices = existingDepartmentsQuery.map(department => ({
             name: department.name,
             value: department.id,
@@ -302,7 +330,11 @@ function addRoles() {
             .then((newDepartmentAnswers) => {
                 const newDepartmentQuery =  `INSERT INTO departments (name) VALUES (?)`;
                 db.query(newDepartmentQuery, [newDepartmentAnswers.newDepartmentName], (newDeptErr, newDeptResult) => {
-                    if (newDeptErr) throw newDeptErr;
+                    if (newDeptErr) {
+                        console.error('Error with new department query: ', newDeptErr);
+                        mainMenu();
+                        return;
+                    };
                     insertRole(answers.title, answers.salary, newDeptResult.insertId);
                     mainMenu();
                 });
@@ -323,7 +355,11 @@ function insertRole(title, salary, departmentId) {
         department_id: departmentId,
     };
     db.query(roleQuery, roleData, (roleErr, roleResult) => {
-        if (roleErr) throw roleErr;
+        if (roleErr) {
+            console.error('Error inserting new role: ', roleErr);
+            mainMenu();
+            return;
+        };
         console.log('Role added successfully.');
         mainMenu();
     });
