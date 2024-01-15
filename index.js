@@ -34,7 +34,8 @@ function mainMenu() {
                 'Add a new department',
                 'Add a new role',
                 'Add a new employee',
-                'Update existing employee information'
+                'Update existing employee information',
+                'Exit application'
             ],
         },
     ])
@@ -60,6 +61,10 @@ function mainMenu() {
             case 'Update existing employee information':
                 updateEmployeeRole();
                 break;
+            case 'Exit application':
+                console.log('Exiting the application. Closing the employee_management database connection.');
+                db.end();
+                break;
         }
     });
 }
@@ -83,6 +88,7 @@ function viewEmployee() {
     db.query(query, (err, results) => {
         if (err) throw err;
         console.table(results);
+        mainMenu();
     });
 }
 // add in addEmployee() function
@@ -142,6 +148,7 @@ function addEmployee() {
             db.query(insertQuery, employeeData, (insertErr, insertResult) =>{
                 if (insertErr) throw insertErr;
                 console.log('Employee added successfully.');
+                mainMenu();
                 });
             });
         });
@@ -185,6 +192,7 @@ function updateEmployeeRole() {
             db.query(updateQuery, [answers.newRoleId, answers.employeeId], (updateErr, updateResult) => {
                 if (updateErr) throw updateErr;
                 console.log('Employee role updated successfully.');
+                mainMenu();
                  });
             });
         });
@@ -197,6 +205,7 @@ function viewDepartment() {
     db.query(`SELECT * FROM departments`, (err, results) => {
         if (err) throw err;
         console.table(results);
+        mainMenu();
     });
 }
 
@@ -215,6 +224,7 @@ function addDepartments() {
         db.query(departmentQuery, [answers.departmentName], (deptErr, deptResult) => {
             if (deptErr) throw deptErr;
             console.log('Department added successfully.');
+            mainMenu();
         });
     });
 }
@@ -225,6 +235,7 @@ function viewRoles() {
     db.query(`SELECT * FROM roles`, (err, results) => {
         if(err) throw err;
         console.table(results);
+        mainMenu();
     });
 }
 // add in new roles
@@ -276,10 +287,12 @@ function addRoles() {
                 db.query(newDepartmentQuery, [newDepartmentAnswers.newDepartmentName], (newDeptErr, newDeptResult) => {
                     if (newDeptErr) throw newDeptErr;
                     insertRole(answers.title, answers.salary, newDeptResult.insertId);
+                    mainMenu();
                 });
             });
             } else {
             insertRole(answers.title, answers.salary, answers.department);
+            mainMenu();
             }
         });
     });
@@ -295,7 +308,8 @@ function insertRole(title, salary, departmentId) {
     db.query(roleQuery, roleData, (roleErr, roleResult) => {
         if (roleErr) throw roleErr;
         console.log('Role added successfully.');
+        mainMenu();
     });
 }
-// add in initial call to start application
-// add in .on('exit') for db at the end
+
+mainMenu();
