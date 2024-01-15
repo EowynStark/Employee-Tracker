@@ -102,10 +102,18 @@ function addEmployee() {
     const rolesQuery = `SELECT id, title FROM roles`;
     const employeesQuery = `SELECT id, CONCAT(first_name, ' ', last_name) AS manager_name FROM employees`;
     db.query(rolesQuery, (roleErr, roles) => {
-        if (roleErr) throw roleErr;
+        if (roleErr) {
+            console.error('Error with role query: ', roleErr);
+            mainMenu();
+            return;
+        };
 
         db.query(employeesQuery, (employeeErr, employees) => {
-            if (employeeErr) throw employeeErr;
+            if (employeeErr) {
+                console.error('Error with employee query: ', employeeErr);
+                mainMenu();
+                return;
+            };
 
             const roleChoices = roles.map(role => ({
                 name: role.title,
@@ -151,7 +159,11 @@ function addEmployee() {
                 manager_id: answers.managerId,
             };
             db.query(insertQuery, employeeData, (insertErr, insertResult) =>{
-                if (insertErr) throw insertErr;
+                if (insertErr) {
+                    console.error('Error inserting employee data: ', insertErr);
+                    mainMenu();
+                    return;
+                };
                 console.log('Employee added successfully.');
                 mainMenu();
                 });
