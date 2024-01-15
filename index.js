@@ -1,9 +1,9 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const db = require('./db');
+const dbFile = require('./db');
 
 // creating mysql connection
-const connection = mysql.createConnection(
+const db = mysql.createConnection(
     {
     host: 'localhost',
     user: 'root',
@@ -13,7 +13,7 @@ const connection = mysql.createConnection(
     console.log(`Connected to the employee_management database.`)
 );
 
-connection.connect((err) => {
+db.connect((err) => {
     if(err) {
         console.error('Error connecting to the database: ', err.message);
         return;
@@ -30,7 +30,9 @@ connection.connect((err) => {
 
 // add in viewEmployee() function
     // table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+function viewEmployee() {
 
+}
 // add in addEmployee() function
     // prompt to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 
