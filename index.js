@@ -84,9 +84,15 @@ function updateEmployeeRole() {
                 choices: roleChoices,
             },
         ])
-        .then((answers) => {})
-        })
-    })
+        .then((answers) => {
+            const updateQuery = `UPDATE employees SET role_id = ? WHERE id = ?`;
+            db.query(updateQuery, [answers.newRoleId, answers.employeeId], (updateErr, updateResult) => {
+                if (updateErr) throw updateErr;
+                console.log('Employee role updated successfully.');
+                 });
+            });
+        });
+    });
 }
 
 // view all departments
