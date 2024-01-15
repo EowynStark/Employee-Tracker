@@ -1,6 +1,5 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const dbFile = require('./db');
 
 // creating mysql connection
 const db = mysql.createConnection(
@@ -21,12 +20,49 @@ db.connect((err) => {
     console.log('Connected to the employee_management database.')
 })
 
-// add in mainMenu() function to display initial menu and user choices
-    // presented with the following options: 
-    // view all departments, view all roles, view all employees
-    // add a department, add a role, add an employee
-    // update an employee role
-    // mainMenu() will have calls to viewDepartments(), addDepartments(), etc as needed
+// Main menu navigator function
+function mainMenu() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'action',
+            message: 'Choose an action: ',
+            choices: [
+                'View all departments',
+                'View all roles',
+                'View all employees',
+                'Add a new department',
+                'Add a new role',
+                'Add a new employee',
+                'Update existing employee information'
+            ],
+        },
+    ])
+    .then((answers) => {
+        switch (answers.action) {
+            case 'View all departments':
+                viewDepartment();
+                break;
+            case 'View all roles':
+                viewRoles();
+                break;
+            case 'View all employees':
+                viewEmployee();
+                break;
+            case 'Add a new department':
+                addDepartments();
+                break;
+            case 'Add a new role':
+                addRoles();
+            case 'Add a new employee':
+                addEmployee();
+                break;
+            case 'Update existing employee information':
+                updateEmployeeRole();
+                break;
+        }
+    });
+}
 
 // view all employees
     // table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
