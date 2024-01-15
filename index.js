@@ -31,7 +31,23 @@ db.connect((err) => {
 // add in viewEmployee() function
     // table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 function viewEmployee() {
-
+    const query = `SELECT
+                    e.id AS employee_id,
+                    e.first_name,
+                    e.last_name,
+                    r.title AS role_title,
+                    d.name AS department_name,
+                    r.salary,
+                    CONCAT(m.first_name, ' ', m.last_name) AS manager_name
+                    FROM employees e
+                    LEFT JOIN roles r ON e.role_id = r.id
+                    LEFT JOIN departments d ON r.department_id = d.id
+                    LEFT JOIN employees m ON e.manager_id = m.id; `;
+                    
+    db.query(query, (err, results) => {
+        if (err) throw err;
+        console.table(results);
+    });
 }
 // add in addEmployee() function
     // prompt to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
