@@ -96,8 +96,20 @@ function addEmployee() {
             },
         ])
         .then((answers) => {
-            
-        })
+            const insertQuery = `INSERT INTO employees SET ?`;
+            const employeeData = {
+                first_name: answers.firstName,
+                last_name: answers.lastName,
+                role_id: answers.roleId,
+                manager_id: answers.managerId,
+            };
+            db.query(insertQuery, employeeData, (insertErr, insertResult) =>{
+                if (insertErr) throw insertErr;
+                console.log('Employee added successfully.');
+                });
+            });
+        });
+     });
 }
 
 // update employee role
