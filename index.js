@@ -51,8 +51,34 @@ function viewEmployee() {
 }
 // add in addEmployee() function
     // prompt to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'Enter a first name for new employee: ',
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'Enter a last name for new employee: ',
+        },
+        {
+            type: 'list',
+            name: 'roleId',
+            message: 'Select a role for new employee: ',
+            choices: '',
+        },
+        {
+            type: 'list',
+            name: 'managerId',
+            message: 'Select a manager for new employee: ',
+            choices: '',
+        },
+    ])
+}
 
-// add in updateEmployeeRole() function
+// update employee role
     // prompt to select an employee to update and their new role and this information is updated in the database
 function updateEmployeeRole() {
     // fetch existing employees and roles then prompt to select and update
