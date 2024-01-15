@@ -77,6 +77,33 @@ function viewRoles() {
 }
 // add in addRoles() function
     // prompt to enter the name, salary, and department for the role and that role is added to the database
-
+function addRoles() {
+    // fetch existing departments, create variable departmentChoices, .push departmentChoices
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Enter a title for the new role: ',
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Enter a salary for the new role: ',
+            validate: (input) => {
+                const isValid = /^\d+(\.\d{1,2})?$/.test(input);
+                return isValid || 'Please enter a valid salary. Must be numerical value with no more than 2 decimal places.';
+            },
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'Select the department for the role: ',
+            choices: departmentChoices,
+        },
+    ])
+    .then((answers) => {
+        if
+    })
+}
 // add in initial call to start application
 // add in .on('exit') for db at the end
