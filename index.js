@@ -55,14 +55,37 @@ function viewEmployee() {
 // add in updateEmployeeRole() function
     // prompt to select an employee to update and their new role and this information is updated in the database
 function updateEmployeeRole() {
-    // fetch existing employees and roles
+    // fetch existing employees and roles then prompt to select and update
     const employeesQuery = `SELECT id, CONCAT (first_name, ' ', last_name) AS employee_name FROM employees`;
     const rolesQuery = `SELECT id, title FROM roles`;
     db.query(employeesQuery, (employeeErr, employees) => {
-
-    })
-    db.query(rolesQuery, (roleErr, roles) => {
-        
+        if (employeeErr) throw employeeErr;
+        db.query(rolesQuery, (roleErr, roles) => {
+            if (roleErr) throw roleErr;
+            const employeeChoices = employees.map(employee => ({
+                name; employee.employee_name,
+                value: employee.id,
+            }));
+        const roleChoices = roles.map(role => ({
+            name: role.title,
+            value: role.id,
+        }));
+        inquirer.prompt([
+            {
+                type: 'list'
+                name: 'employeeId',
+                message: 'Select an employee to update: ',
+                choices: employeeChoices,
+            },
+            {
+                type: 'list',
+                name: 'newRoleId',
+                message: 'Select a new role for this employee: ',
+                choices: roleChoices,
+            },
+        ])
+        .then((answers) => {})
+        })
     })
 }
 
