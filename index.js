@@ -52,30 +52,52 @@ function viewEmployee() {
 // add in addEmployee() function
     // prompt to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 function addEmployee() {
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: 'firstName',
-            message: 'Enter a first name for new employee: ',
-        },
-        {
-            type: 'input',
-            name: 'lastName',
-            message: 'Enter a last name for new employee: ',
-        },
-        {
-            type: 'list',
-            name: 'roleId',
-            message: 'Select a role for new employee: ',
-            choices: '',
-        },
-        {
-            type: 'list',
-            name: 'managerId',
-            message: 'Select a manager for new employee: ',
-            choices: '',
-        },
-    ])
+    const rolesQuery = `SELECT id, title FROM roles`;
+    const employeesQuery = `SELECT id, CONCAT(first_name, ' ', last_name) AS manager_name FROM employees`;
+    db.query(rolesQuery, (roleErr, roles) => {
+        if (roleErr) throw roleErr;
+
+        db.query(employeesQuery, (employeeErr, employees) => {
+            if (employeeErr) throw employeeErr;
+
+            const roleChoices = roles.map(role => ({
+                name: role.title,
+                value: role.id,
+            }));
+            const managerChoices = [
+                { name: 'No Manager', value: null}, ...employees.map(manager => ({
+                    name: manager.manager_name,
+                    value: manager.id,
+                })),
+            ];
+
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'firstName',
+                message: 'Enter a first name for new employee: ',
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: 'Enter a last name for new employee: ',
+            },
+            {
+                type: 'list',
+                name: 'roleId',
+                message: 'Select a role for new employee: ',
+                choices: roleChoices,
+            },
+            {
+                type: 'list',
+                name: 'managerId',
+                message: 'Select a manager for new employee: ',
+                choices: managerChoices,
+            },
+        ])
+        .then((answers) => {
+            
+        })
 }
 
 // update employee role
