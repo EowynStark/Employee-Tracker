@@ -63,7 +63,7 @@ function updateEmployeeRole() {
         db.query(rolesQuery, (roleErr, roles) => {
             if (roleErr) throw roleErr;
             const employeeChoices = employees.map(employee => ({
-                name; employee.employee_name,
+                name: employee.employee_name,
                 value: employee.id,
             }));
         const roleChoices = roles.map(role => ({
@@ -72,7 +72,7 @@ function updateEmployeeRole() {
         }));
         inquirer.prompt([
             {
-                type: 'list'
+                type: 'list',
                 name: 'employeeId',
                 message: 'Select an employee to update: ',
                 choices: employeeChoices,
