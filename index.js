@@ -43,7 +43,7 @@ function viewEmployee() {
                     LEFT JOIN roles r ON e.role_id = r.id
                     LEFT JOIN departments d ON r.department_id = d.id
                     LEFT JOIN employees m ON e.manager_id = m.id; `;
-                    
+
     db.query(query, (err, results) => {
         if (err) throw err;
         console.table(results);
@@ -57,6 +57,12 @@ function viewEmployee() {
 
 // add in viewDepartment() function
     // table showing department names and department ids
+function viewDepartment() {
+    db.query(`SELECT * FROM departments`, (err, results) => {
+        if (err) throw err;
+        console.table(results);
+    });
+}
 
 // add in addDepartment() function
     // prompt to enter the name of the department and that department is added to the database
