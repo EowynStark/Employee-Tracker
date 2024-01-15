@@ -55,6 +55,7 @@ function mainMenu() {
                 break;
             case 'Add a new role':
                 addRoles();
+                break;
             case 'Add a new employee':
                 addEmployee();
                 break;
@@ -86,7 +87,11 @@ function viewEmployee() {
                     LEFT JOIN employees m ON e.manager_id = m.id; `;
 
     db.query(query, (err, results) => {
-        if (err) throw err;
+        if (err) {
+            console.error('Error viewing employees: ', err);
+            mainMenu();
+            return;
+        };
         console.table(results);
         mainMenu();
     });
