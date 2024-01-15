@@ -64,8 +64,24 @@ function viewDepartment() {
     });
 }
 
-// add in addDepartment() function
+// add new departments
     // prompt to enter the name of the department and that department is added to the database
+function addDepartments() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'departmentName',
+            message: 'Enter a name for the new department: ',
+        },
+    ])
+    .then((answers) => {
+        const departmentQuery = `INSERT INTO departments (name) VALUES (?)`;
+        db.query(departmentQuery, [answers.departmentName], (deptErr, deptResult) => {
+            if (deptErr) throw deptErr;
+            console.log('Department added successfully.');
+        });
+    });
+}
 
 // view all roles
     // table showing job title, role id, the department that role belongs to, and the salary for that role
@@ -132,7 +148,7 @@ function addRoles() {
         });
     });
 }
-// helper function for addRoles()
+    // helper function for addRoles()
 function insertRole(title, salary, departmentId) {
     const roleQuery = `INSERT INTO roles SET ?`;
     const roleData = {
