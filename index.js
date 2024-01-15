@@ -79,7 +79,15 @@ function viewRoles() {
     // prompt to enter the name, salary, and department for the role and that role is added to the database
 function addRoles() {
     // fetch existing departments, create variable departmentChoices, .push departmentChoices
-    inquirer.prompt([
+    const existingDepartmentsQuery = `SELECT id, name FROM departments`;
+    db.query(existingDepartmentsQuery, (err, existingDepartmentsQuery) => {
+        if (err) throw err;
+        const departmentChoices = existingDepartmentsQuery.map(department => ({
+            name: department.name,
+            value: department.id,
+        }));
+        departmentChoices.push({ name: 'Add New Department', value: 'new'});
+        inquirer.prompt([
         {
             type: 'input',
             name: 'title',
@@ -100,10 +108,29 @@ function addRoles() {
             message: 'Select the department for the role: ',
             choices: departmentChoices,
         },
-    ])
-    .then((answers) => {
-        if
-    })
+        ])
+        .then((answers) => {
+            if (answers.department === 'new') {
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'newDepartmentName',
+                    message: 'Enter the name of the new department: ',
+                },
+            ])
+            .then((newDepartmentAnswers) => {
+                const newDepartmentQuery =  `INSERT INTO departments (name) VALUES (?)`;
+                db.query(newDepartmentQuery, [newDepartmentAnswers.newDepartmentName], (newDeptErr, newDeptResult) => {
+                    if (newDeptErr) throw newDeptErr;
+                    insertRole(answers.title, answers.salary, newDeptResult.insertId);
+                });
+            });
+            } else {
+            insertRole(answers.title, answers.salary, answers.department);
+            }
+        });
+    });
 }
+// add insertRole() function
 // add in initial call to start application
 // add in .on('exit') for db at the end
